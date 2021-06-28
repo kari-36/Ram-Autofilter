@@ -12,10 +12,10 @@ from bot.plugins.auto_filter import recacher # pylint: disable=import-error
 
 db = Database()
 
-@Client.on_message(filters.command(["add"]) & filters.group, group=1)
+@Client.on_message(filters.command(["autofilter"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
     """
-    A Funtion To Handle Incoming /add Command TO COnnect A Chat With Group
+    A Funtion To Handle Incoming /autofilter Command TO COnnect A Chat With Group
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
@@ -113,7 +113,6 @@ async def connect(bot: Bot, update):
                         file_id = file_id.video.file_id
                         file_name = msgs.video.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
-                        file_size = msgs.video.file_size
                         file_type = "video"
                     
                     elif msgs.audio:
@@ -128,7 +127,6 @@ async def connect(bot: Bot, update):
                         file_id = file_id.audio.file_id
                         file_name = msgs.audio.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
-                        file_size = msgs.audio.file_size
                         file_type = "audio"
                     
                     elif msgs.document:
@@ -143,7 +141,6 @@ async def connect(bot: Bot, update):
                         file_id = file_id.document.file_id
                         file_name = msgs.document.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
-                        file_size = msgs.document.file_size
                         file_type = "document"
                     
                     for i in ["_", "|", "-", "."]: # Work Around
@@ -167,7 +164,6 @@ async def connect(bot: Bot, update):
                         unique_id=unique_id,
                         file_name=file_name,
                         file_caption=file_caption,
-                        file_size=file_size,
                         file_type=file_type,
                         file_link=file_link,
                         chat_id=channel_id,
@@ -193,10 +189,10 @@ async def connect(bot: Bot, update):
     await wait_msg.edit_text(f"Channel Was Sucessfully Added With <code>{len(data)}</code> Files..")
 
 
-@Client.on_message(filters.command(["del"]) & filters.group, group=1)
+@Client.on_message(filters.command(["autofilterdel"]) & filters.group, group=1)
 async def disconnect(bot: Bot, update):
     """
-    A Funtion To Handle Incoming /del Command TO Disconnect A Chat With A Group
+    A Funtion To Handle Incoming /autofilterdel Command TO Disconnect A Chat With A Group
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
@@ -258,7 +254,7 @@ async def disconnect(bot: Bot, update):
     await wait_msg.edit_text("Sucessfully Deleted All Files From DB....")
 
 
-@Client.on_message(filters.command(["delall"]) & filters.group, group=1)
+@Client.on_message(filters.command(["autofilterdelall"]) & filters.group, group=1)
 async def delall(bot: Bot, update):
     """
     A Funtion To Handle Incoming /delall Command TO Disconnect All Chats From A Group
@@ -284,7 +280,7 @@ async def delall(bot: Bot, update):
     await update.reply_text("Sucessfully Deleted All Connected Chats From This Group....")
 
 
-@Client.on_message(filters.channel & (filters.video | filters.audio | filters.document) & ~filters.edited, group=0)
+@Client.on_message(filters.channel & (filters.video | filters.audio | filters.document), group=0)
 async def new_files(bot: Bot, update):
     """
     A Funtion To Handle Incoming New Files In A Channel ANd Add Them To Respective Channels..
@@ -300,22 +296,19 @@ async def new_files(bot: Bot, update):
             file_id = update.video.file_id
             file_name = update.video.file_name[0:-4]
             file_caption  = update.caption if update.caption else ""
-            file_size = update.video.file_size
 
         elif update.audio:
             file_type = "audio"
             file_id = update.audio.file_id
             file_name = update.audio.file_name[0:-4]
             file_caption  = update.caption if update.caption else ""
-            file_size = update.audio.file_size
 
         elif update.document:
             file_type = "document"
             file_id = update.document.file_id
             file_name = update.document.file_name[0:-4]
             file_caption  = update.caption if update.caption else ""
-            file_size = update.document.file_size
-
+        
         for i in ["_", "|", "-", "."]: # Work Around
             try:
                 file_name = file_name.replace(i, " ")
@@ -345,7 +338,6 @@ async def new_files(bot: Bot, update):
                     unique_id=unique_id,
                     file_name=file_name,
                     file_caption=file_caption,
-                    file_size = file_size,
                     file_type=file_type,
                     file_link=file_link,
                     chat_id=channel_id,
