@@ -109,7 +109,7 @@ async def jotutkarnatuti101(bot, update):
     )
 
 
-@Client.on_message(filters.command(["help"]) & filters.private, group=1)
+@Client.on_message(filters.command(["226248375"]) & filters.private, group=1)
 async def help(bot, update):
     buttons = [[
         InlineKeyboardButton('Home ⚡', callback_data='start'),
@@ -129,7 +129,7 @@ async def help(bot, update):
     )
 
 
-@Client.on_message(filters.command(["about"]) & filters.private, group=1)
+@Client.on_message(filters.command(["yapo"]) & filters.private, group=1)
 async def about(bot, update):
     
     buttons = [[
