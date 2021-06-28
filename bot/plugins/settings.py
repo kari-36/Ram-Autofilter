@@ -8,8 +8,8 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot import VERIFY # pylint: disable=import-error
 
-@Client.on_message(filters.command(["settings"]) & filters.group, group=1)
-async def settings(bot, update):
+@Client.on_message(filters.command(["autofiltersettings"]) & filters.group, group=1)
+async def autofiltersettings(bot, update):
     
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
